@@ -1,0 +1,16 @@
+<div *ngIf="!products; then thenBlock; else elseBlock"></div>
+<ng-template #thenBlock>
+  <p>Loading...</p>
+</ng-template>
+<ng-template #elseBlock>
+  <ul>
+    <li *ngFor="let product of products">
+      <p>
+        {{ product.name }}
+      </p>
+      <p>
+        {{ product.quantity }}
+      </p>
+    </li>
+  </ul>
+</ng-template>
