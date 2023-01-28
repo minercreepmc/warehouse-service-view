@@ -1,1 +1,9 @@
-<p>product-create-form works!</p>
+<div class="my-3 mx-2">
+  <div class="formgroup-inline">
+    <div class="field">
+      <label for="name">Product name</label>
+      <input id="name" type="text" pInputText [formControl]="name" />
+    </div>
+    <p-button type="button" (click)="createProduct()">Create</p-button>
+  </div>
+</div>

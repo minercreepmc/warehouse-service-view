@@ -1,16 +1,18 @@
-<div *ngIf="!products; then thenBlock; else elseBlock"></div>
-<ng-template #thenBlock>
-  <p>Loading...</p>
-</ng-template>
-<ng-template #elseBlock>
-  <ul>
-    <li *ngFor="let product of products">
-      <p>
-        {{ product.name }}
-      </p>
-      <p>
-        {{ product.quantity }}
-      </p>
-    </li>
-  </ul>
-</ng-template>
+<section class="mt-3">
+  <div *ngIf="!products; then thenBlock; else elseBlock"></div>
+  <ng-template #thenBlock>
+    <p>Loading...</p>
+  </ng-template>
+  <ng-template #elseBlock>
+    <ul class="grid">
+      <li class="col-12 md:col-6 lg:col-3" *ngFor="let product of products">
+        <a routerLink="/products/{{ product.name }}">
+          <p-card [header]="product.name">
+            <b> Quantity: </b>
+            {{ product.quantity }}
+          </p-card>
+        </a>
+      </li>
+    </ul>
+  </ng-template>
+</section>

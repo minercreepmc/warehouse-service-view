@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~normalize.css';
+
+ul li {
+  list-style-type: none;
+}
+
+ul li a {
+  text-decoration: none;
+}
+
+* {
+  font-family: 'Spline Sans', sans-serif;
+}
