@@ -3,7 +3,16 @@
   "compilerOptions": {
     "paths": {
       "@services/*": [
-        "./src/app/services/*"
+        "./src/apps/services/*"
+      ],
+      "@middlewares/*": [
+        "./src/apps/middlewares/*"
+      ],
+      "@components/*": [
+        "./src/apps/components/*"
+      ],
+      "@configs/*": [
+        "./src/apps/configs/*"
       ]
     },
     "baseUrl": "./",
@@ -25,8 +34,10 @@
     "useDefineForClassFields": false,
     "lib": [
       "ES2022",
-      "dom"
-    ]
+      "dom",
+      "esnext.asynciterable"
+    ],
+    "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

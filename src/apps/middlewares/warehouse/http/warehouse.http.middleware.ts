@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
+  delay,
   first,
   map,
   Observable,
@@ -12,16 +13,20 @@ import {
 } from 'rxjs';
 import {
   IProduct,
-  IProductCreate,
-  IProductImport,
+  ICreateProduct,
+  IImportProduct,
   IProducts,
-} from './warehouse.interface';
+  IShipProduct,
+} from '../warehouse.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class WarehouseService {
+export class WarehouseHttpMiddleware {
   private readonly url = 'http://localhost:3000/products';
+  private readonly createUrl = 'http://localhost:3000/products/create';
+  private readonly importUrl = 'http://localhost:3000/products/import';
+  private readonly shipUrl = 'http://localhost:3000/products/ship';
   readonly products = new BehaviorSubject<IProducts>([]);
   constructor(private readonly http: HttpClient) {}
 
@@ -29,7 +34,7 @@ export class WarehouseService {
     return this.products.asObservable();
   }
 
-  loadProducts() {
+  loadProducts$() {
     const productGetting$ = this.http.get<IProduct[]>(this.url).pipe(
       tap((products: IProduct[]) => {
         this.products.next(products);
@@ -40,7 +45,7 @@ export class WarehouseService {
     return productGetting$;
   }
 
-  createProduct(product: IProductCreate): Observable<IProduct> {
+  createProduct$(product: ICreateProduct): Observable<IProduct> {
     const newProduct$ = this.http.post<IProduct>(`${this.url}/create`, product);
     return newProduct$.pipe(
       first(),
@@ -51,22 +56,22 @@ export class WarehouseService {
     );
   }
 
-  getProduct(productName: string): Observable<IProduct> {
+  getProduct$(productName: string): Observable<IProduct> {
     const url = `${this.url}/${productName}`;
     return this.http.get<IProduct>(url);
   }
 
-  importProduct(product: IProductImport): Observable<IProduct> {
+  importProduct$(product: IImportProduct): Observable<IProduct> {
     const productImporting$ = this.http.post<IProduct>(
       `${this.url}/imports`,
       product,
     );
-    return productImporting$.pipe(
-      first(),
-      tap((productImported) => {
-        console.log(productImported);
-      }),
-    );
+    return productImporting$.pipe(first(), delay(1000));
+  }
+
+  shipProduct$(product: IShipProduct): Observable<IProduct> {
+    const productShipping$ = this.http.post<IProduct>(this.shipUrl, product);
+    return productShipping$.pipe(first(), delay(1000));
   }
 
   private handleError(err: HttpErrorResponse): Observable<never> {

@@ -1,6 +1,6 @@
 <section *ngIf="product" class="m-5">
   <h2>{{ product.name }}</h2>
-  <p><b>Quantity: </b>{{ product.quantity }}</p>
+  <p><b>Quantity: </b>{{ product.quantity}}</p>
 
   <input
     pInputText
@@ -8,17 +8,17 @@
     #quantity
     placeholder="Amount of quantity to import/ship"
     class="mb-3"
+    [formControl]="quantityForm"
   />
   <div>
-    <p-button
-      label="Import"
-      (click)="importProduct({ name: product.name, quantity: +quantity.value })"
-    ></p-button>
+    <p-button label="Import" (click)="importProduct()"></p-button>
     <p-button
       label="Ship"
       styleClass="p-button-outlined p-button-secondary"
       [style]="{ 'margin-left': '0.5em' }"
-      (click)="shipProduct(+quantity.value)"
+      (click)="shipProduct()"
     ></p-button>
   </div>
 </section>
+
+<p-toast></p-toast>

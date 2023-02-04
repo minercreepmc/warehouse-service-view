@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { WarehouseService } from '@services/warehouse';
+import {
+  IWarehouseMiddleware,
+  warehouseMiddlewareDiToken,
+} from '@middlewares/warehouse';
 
 @Component({
   selector: 'app-product-create-form',
@@ -12,7 +15,8 @@ export class ProductCreateFormComponent {
   name = new FormControl('');
 
   constructor(
-    private readonly warehouseService: WarehouseService,
+    @Inject(warehouseMiddlewareDiToken)
+    private readonly warehouseMiddleware: IWarehouseMiddleware,
     private readonly router: Router,
   ) {}
 
@@ -22,10 +26,10 @@ export class ProductCreateFormComponent {
 
   createProduct() {
     if (this.name.value) {
-      const productCreating$ = this.warehouseService.createProduct({
+      const productCreating$ = this.warehouseMiddleware.createProduct$({
         name: this.name.value,
       });
-      productCreating$.subscribe((newProduct) => {
+      productCreating$.subscribe(() => {
         this.clearForm();
         this.router.navigate(['']);
       });
